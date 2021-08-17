@@ -1,0 +1,10 @@
+the functions that will make the program:
+1. get the initial pack. - user input
+2. list all pack bought,
+3. give the total amount invested,
+4. give the balance,
+5. give the time elapsed,
+6. give the remaining time,
+7. give the amount earned,
+8. give the amount yet to be earned,
+9. prompt the user to tell how long he want to invest, - user input
