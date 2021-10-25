@@ -238,7 +238,13 @@ def main():
     print('\n')
     print("Enter the cash amount or the value of the pack you would like to start with!")
     global cash
-    cash = inputNum()
+    while True:
+        cash = inputNum()
+        if cash < 200:
+            print("The minimum amount is $200.")
+            continue
+        else:
+            break
     print('\n')
     while True:
         print("Would you be making withdrawals? Y/N")
@@ -278,14 +284,17 @@ def main():
                     continue
             break
 
+        else:
+            print(f"{response} is not a valid entry. Enter Y/N")
+            continue
+
     print("Enter the length (IN YEARS) of the investment simulation you would like to run.")
     length_in_years = inputNum()
     invest_length = int(length_in_years) * 52
 
     while True:  # This is the main loop.
-        # Check the if a pack can be bough with the available cash:
-        if cash >= 200:
-            get_pack(cash)
+        # Buys packs with the cash provided:
+        get_pack(cash)
         for k in range(invest_length):
             print(f'Week {k + 1}:')
             get_paid(cash)
