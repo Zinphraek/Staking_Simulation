@@ -238,7 +238,7 @@ def main():
     print('\n')
     print("Enter the cash amount or the value of the pack you would like to start with!")
     global cash
-    while True:
+    while True:  # Making sure the user enter a value greater or equal to 200.
         cash = inputNum()
         if cash < 200:
             print("The minimum amount is $200.")
@@ -289,7 +289,14 @@ def main():
             continue
 
     print("Enter the length (IN YEARS) of the investment simulation you would like to run.")
-    length_in_years = inputNum()
+    while True:  # Making sure the user enter a value greater or equal to 1.
+        length_in_years = inputNum()
+        if length_in_years < 1:
+            print("The minimum investment year is 1.")
+            continue
+        else:
+            break
+
     invest_length = int(length_in_years) * 52
 
     while True:  # This is the main loop.
