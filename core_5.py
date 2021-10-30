@@ -185,24 +185,19 @@ def get_paid(balance):
     else:
         global cash, total_payments
         for pack in my_packs:
-            if pack.get_p_life() == 1:
-                balance += pack.get_p_w_roi()
-                cash = balance
-                total_payments += pack.get_p_w_roi()
-                print(f"HooHaa!!! You just got paid the amount of: ${pack.get_p_w_roi()}"
-                      f"\nYour new Balance is: ${balance}.")
-                pack.p_life_remaining(1)
-                my_packs.remove(pack)
-                print(f" The life span of the pack {pack} has expired; therefore it is no longer active, and has been"
-                      f" removed from your pack list.")
-                print(f"You now have {len(my_packs)} active packs remaining!")
+            balance += pack.get_p_w_roi()
+            cash = balance
+            total_payments += pack.get_p_w_roi()
+            print(f"HooHaa!!! You just got paid the amount of: ${pack.get_p_w_roi()}"
+                  f"\nYour new Balance is: ${balance}.")
+            pack.p_life_remaining(1)
+            if pack.get_p_life() >= 1:
+                pass
             else:
-                balance += pack.get_p_w_roi()
-                cash = balance
-                total_payments += pack.get_p_w_roi()
-                print(f"HooHaa!!! You just got paid the amount of: ${pack.get_p_w_roi()}"
-                      f"\nYour new Balance is: ${balance}.")
-                pack.p_life_remaining(1)
+                my_packs.remove(pack)
+                print(f" The life span of the pack {pack} has expired; "
+                      f"therefore, it is no longer active, and has been removed from your pack list.")
+                print(f"You now have {len(my_packs)} active packs remaining!")
 
 
 def make_withdraw(frequency, withdraw_amount, w_e):
@@ -254,7 +249,14 @@ def main():
             break
         elif response.lower() == 'y' or response.lower() == 'yes':
             print("Enter the amount you would like to periodically withdraw.")
-            withdraw_value = inputNum()
+            while True:  # Making sure the user enter a negative value.
+                withdraw_value = inputNum()
+                if withdraw_value < 0:
+                    print("The withdraw amount cannot be a negative value!")
+                    continue
+                else:
+                    break
+
             while True:
                 print("Enter the frequency of your withdraw:"
                       "\nEnter 'W' for weekly; 'B' for biweekly; 'M' for monthly;"
@@ -305,7 +307,7 @@ def main():
         for k in range(invest_length):
             print(f'Week {k + 1}:')
             get_paid(cash)
-            make_withdraw(freq, withdraw_value, k+1)
+            make_withdraw(freq, withdraw_value, k + 1)
             get_pack(cash)
             print(f"Your Balance is: ${cash}\n")
 
