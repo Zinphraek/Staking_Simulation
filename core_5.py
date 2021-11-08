@@ -1,6 +1,9 @@
-# This is the 5th try.
 import sys
+
+import random
+
 from pyinputplus import *
+
 from Core import P_list
 
 
@@ -64,7 +67,9 @@ my_packs = []
 cash = 0
 total_payments = 0
 total_withdraw = 0
+capital_invested = 0
 withdraw_count = 0
+funding_decision = True
 
 
 def cash_adjustment(b):
@@ -79,12 +84,10 @@ def congratulation(a, p):
     print(f"Here is the list of the packs you possess so far: {p}")
 
 
-def get_pack(value):
+def buy_packs(value):
     """This function buy the highest pack with the available cash = value"""
-
     if value < 200:
-        print("You don't have enough money yet to buy a pack!"
-              " Wait a little bit longer, or fund your account")
+        pass
     else:
         while value >= 200:
             if value >= 100000:
@@ -177,6 +180,45 @@ def get_pack(value):
                 print(f"You now have {len(my_packs)} active packs!")
 
 
+def get_pack(value):
+
+    if value < 200:
+        global funding_decision
+        while funding_decision:
+            print("You don't have enough money yet to buy a pack!\n"
+                  " Fund your account, or continue without additional funds? ")
+            print("(1) Add fund to my account.\n"
+                  "(2) Continue without funding.\n"
+                  "(3) Do not ask again.\n"
+                  "(4) Exit simulation")
+            decision = inputNum('> ')
+            if decision == 4:
+                sys.exit()
+            elif decision == 3:
+                funding_decision = False
+            elif decision == 2:
+                break
+            elif decision == 1:
+                print("How much do you want to fund?")
+                while True:
+                    fund = inputNum()
+                    if fund <= 0:
+                        print("Enter a value greater than 0")
+                        continue
+                    else:
+                        global cash, capital_invested
+                        cash += fund
+                        buy_packs(cash)
+                        capital_invested += fund
+                        break
+
+            else:
+                print(f"{decision} is not a valid entry. Enter 'F', or 'W', or 'Q'")
+                continue
+    else:
+        buy_packs(value)
+
+
 def get_paid(balance):
     """This function pays the user the corresponding amount
     of any pack bough """
@@ -218,7 +260,7 @@ def make_withdraw(frequency, withdraw_amount, w_e):
 
 
 def main():
-    print("""Liyeplimal investment simulation
+    print("""--Liyeplimal investment simulation--
 
     Purpose:
         This program helps the user simulate different investment strategies
@@ -226,100 +268,170 @@ def main():
         A manual version will be added to this program latter.""")
 
     print('\n')
-    freq = 0  # freq is the frequency of the withdraw.
-    withdraw_value = 0
-    for pack in packs:
-        print(pack.get_pack_information())
-    print('\n')
-    print("Enter the cash amount or the value of the pack you would like to start with!")
-    global cash
-    while True:  # Making sure the user enter a value greater or equal to 200.
-        cash = inputNum()
-        if cash < 200:
-            print("The minimum amount is $200.")
-            continue
-        else:
-            break
-    print('\n')
+    print("Select what you want to do:\n"
+          "(1) Run a simulation.\n"
+          "(2) Trade.\n"
+          "(3) Exit.")
     while True:
-        print("Would you be making withdrawals? Y/N")
-        response = input('> ')
-        if response.lower() == 'n' or response.lower() == 'no':
-            freq = 0
-            break
-        elif response.lower() == 'y' or response.lower() == 'yes':
-            print("Enter the amount you would like to periodically withdraw.")
-            while True:  # Making sure the user enter a negative value.
-                withdraw_value = inputNum()
-                if withdraw_value < 0:
-                    print("The withdraw amount cannot be a negative value!")
+        choice = inputNum('> ')
+        if choice == 3:
+            print('Thank you!')
+            sys.exit()
+        elif choice == 2:
+            print("Do you want to Buy or Sell?\n"
+                  "(1) Buy.\n"
+                  "(2) Sell.\n"
+                  "(3) Exit.")
+            while True:
+                action = inputNum('> ')
+                if action == 1:
+                    while True:
+                        quantity = inputNum('Entre the quantity you would like to purchase: ')
+                        if quantity <= 0:
+                            print('The quantity must be greater than 0.')
+                            continue
+                        else:
+                            while True:
+                                max_price = inputNum('Enter the maximum price you are willing to pay per unit: ')
+                                if max_price <= 0:
+                                    print("The price must be greater than 0.")
+                                    continue
+                                else:
+                                    print("Your order has been placed; you will be notified when it is completed.")
+                                    break
+                            break
+                    break
+                elif action == 2:
+                    while True:
+                        quantity = inputNum('Entre the quantity you would like to sell: ')
+                        if quantity <= 0:
+                            print('The quantity must be greater than 0.')
+                            continue
+                        else:
+                            while True:
+                                min_price = inputNum('Enter the minimum price you are willing to accept per unit: ')
+                                if min_price <= 0:
+                                    print("The price must be greater than 0.")
+                                    continue
+                                else:
+                                    print("Your order has been placed; you will be notified when it is completed.")
+                                    break
+                            break
+                    break
+                elif action == 3:
+                    print('Thank you!')
+                    sys.exit()
+                else:
+                    print(f"{action} is not a valid entry. Enter 1, 2, or 3.")
+                    continue
+        elif choice == 1:
+            freq = 0  # freq is the frequency of the withdraw.
+            withdraw_value = 0
+            for pack in packs:
+                print(pack.get_pack_information())
+            print('\n')
+            print("Enter the cash amount or the value of the pack you would like to start with!")
+            global cash
+            while True:  # Making sure the user enter a value greater or equal to 200.
+                cash = inputNum()
+                if cash < 200:
+                    print("The minimum amount is $200.")
                     continue
                 else:
                     break
+            print('\n')
+
+            print("Enter the length (IN YEARS) of the investment simulation you would like to run.")
+            while True:  # Making sure the user enter a value greater or equal to 1.
+                length_in_years = inputNum()
+                if length_in_years < 1:
+                    print("The minimum investment year is 1.")
+                    continue
+                else:
+                    break
+
+            invest_length = int(length_in_years) * 52
 
             while True:
-                print("Enter the frequency of your withdraw:"
-                      "\nEnter 'W' for weekly; 'B' for biweekly; 'M' for monthly;"
-                      "\n'Q' for quarterly; 'S' for semi annually; or 'A' for annually.")
+                print("Would you be making withdrawals? Y/N")
+                response = input('> ')
+                if response.lower() == 'n' or response.lower() == 'no':
+                    freq = 0
+                    break
+                elif response.lower() == 'y' or response.lower() == 'yes':
+                    print("Enter the amount you would like to periodically withdraw.")
+                    while True:  # Making sure the user enter a negative value.
+                        withdraw_value = inputNum()
+                        if withdraw_value < 0:
+                            print("The withdraw amount must be greater than 0!")
+                            continue
+                        else:
+                            break
 
-                message = input('> ')
-                if message.lower() == 'w' or message.lower() == 'weekly':
-                    freq = 1
+                    while True:
+                        print("Enter the frequency of your withdraw.\n"
+                              "(1) Weekly.\n"
+                              "(2) Biweekly.\n"
+                              "(3) Monthly.\n"
+                              "(4) Quarterly.\n"
+                              "(5) Semi annually.\n"
+                              "(6) Annually.\n"
+                              "(7) Randomly.")
+
+                        message = inputNum('> ')  # Setup the withdrawal frequency.
+                        if message == 1:
+                            freq = 1
+                            break
+                        elif message == 2:
+                            freq = 2
+                            break
+                        elif message == 3:
+                            freq = 4
+                            break
+                        elif message == 4:
+                            freq = 12
+                            break
+                        elif message == 5:
+                            freq = 24
+                            break
+                        elif message == 6:
+                            freq = 52
+                            break
+                        elif message == 7:
+                            freq = random.randint(1, 52)
+                            break
+                        else:
+                            print(
+                                f"{message} is not a valid option. Chose from the following: 'W', 'B', 'M', 'Q', 'S', 'A'.")
+                            continue
                     break
-                elif message.lower() == 'b' or message.lower() == 'biweekly':
-                    freq = 2
-                    break
-                elif message.lower() == 'm' or message.lower() == 'monthly':
-                    freq = 4
-                    break
-                elif message.lower() == 'q' or message.lower() == 'quarterly':
-                    freq = 12
-                    break
-                elif message.lower() == 's' or message.lower() == 'semi annually':
-                    freq = 24
-                    break
-                elif message.lower() == 'a' or message.lower() == 'annually':
-                    freq = 52
-                    break
+
                 else:
-                    print(f"{message} is not a valid option. Chose between 'W', 'B', 'M', 'Q', 'S', 'A'.")
+                    print(f"{response} is not a valid entry. Enter Y/N")
                     continue
-            break
 
+            while True:  # This is the main loop.
+                # Buys packs with the cash provided:
+                get_pack(cash)
+                for k in range(invest_length):
+                    print(f'Week {k + 1}:')
+                    get_paid(cash)
+                    make_withdraw(freq, withdraw_value, k + 1)
+                    get_pack(cash)
+                    print(f"Your Balance is: ${cash}\n")
+
+                o = invest_length + 1
+                while my_packs:
+                    print(f" Week {o}:")
+                    get_paid(cash)
+                    print(f"Your total payments is: {total_payments}")
+                    make_withdraw(freq, withdraw_value, o)
+                    o += 1
+                    print('\n')
+                sys.exit()
         else:
-            print(f"{response} is not a valid entry. Enter Y/N")
+            print(f"{choice} is not a valid entry; chose from 1 to 3.")
             continue
-
-    print("Enter the length (IN YEARS) of the investment simulation you would like to run.")
-    while True:  # Making sure the user enter a value greater or equal to 1.
-        length_in_years = inputNum()
-        if length_in_years < 1:
-            print("The minimum investment year is 1.")
-            continue
-        else:
-            break
-
-    invest_length = int(length_in_years) * 52
-
-    while True:  # This is the main loop.
-        # Buys packs with the cash provided:
-        get_pack(cash)
-        for k in range(invest_length):
-            print(f'Week {k + 1}:')
-            get_paid(cash)
-            make_withdraw(freq, withdraw_value, k + 1)
-            get_pack(cash)
-            print(f"Your Balance is: ${cash}\n")
-
-        o = invest_length + 1
-        while my_packs:
-            print(f" Week {o}:")
-            get_paid(cash)
-            print(f"Your total payments is: {total_payments}")
-            make_withdraw(freq, withdraw_value, o)
-            o += 1
-            print('\n')
-        sys.exit()
 
 
 # Let's run the program:
