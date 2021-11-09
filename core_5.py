@@ -183,10 +183,10 @@ def buy_packs(value):
 def get_pack(value):
 
     if value < 200:
-        global funding_decision
+        global funding_decision, cash, capital_invested
         while funding_decision:
             print("You don't have enough money yet to buy a pack!\n"
-                  " Fund your account, or continue without additional funds? ")
+                  " Fund your account, or continue without additional funds. ")
             print("(1) Add fund to my account.\n"
                   "(2) Continue without funding.\n"
                   "(3) Do not ask again.\n"
@@ -200,20 +200,20 @@ def get_pack(value):
                 break
             elif decision == 1:
                 print("How much do you want to fund?")
+                print(f"The minimum amount needed to buy a pack right now is ${200-cash}.")
                 while True:
                     fund = inputNum()
                     if fund <= 0:
-                        print("Enter a value greater than 0")
+                        print("Enter a value greater than 0.")
                         continue
                     else:
-                        global cash, capital_invested
                         cash += fund
                         buy_packs(cash)
                         capital_invested += fund
                         break
 
             else:
-                print(f"{decision} is not a valid entry. Enter 'F', or 'W', or 'Q'")
+                print(f"{decision} is not a valid entry. Chose from 1 to 3.")
                 continue
     else:
         buy_packs(value)
