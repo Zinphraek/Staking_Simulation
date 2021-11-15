@@ -361,7 +361,7 @@ def main():
                     break
                 elif response.lower() == 'y' or response.lower() == 'yes':
                     print("Enter the amount you would like to periodically withdraw.")
-                    while True:  # Making sure the user enter a negative value.
+                    while True:  # Making sure the user enter a positive value.
                         withdraw_value = inputNum()
                         if withdraw_value < 0:
                             print("The withdraw amount must be greater than 0!")
