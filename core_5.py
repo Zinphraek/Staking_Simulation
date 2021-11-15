@@ -233,11 +233,12 @@ def get_paid(balance):
             print(f"HooHaa!!! You just got paid the amount of: ${pack.get_p_w_roi()}"
                   f"\nYour new Balance is: ${balance}.")
             pack.p_life_remaining(1)
+
             if pack.get_p_life() >= 1:
                 pass
             else:
                 my_packs.remove(pack)
-                print(f" The life span of the pack {pack} has expired; "
+                print(f" The life span of the pack {pack.get_p_name()} has expired; "
                       f"therefore, it is no longer active, and has been removed from your pack list.")
                 print(f"You now have {len(my_packs)} active packs remaining!")
 
@@ -402,7 +403,7 @@ def main():
                             break
                         else:
                             print(
-                                f"{message} is not a valid option. Chose from the following: 'W', 'B', 'M', 'Q', 'S', 'A'.")
+                                f"{message} is not a valid option. Chose from 1 to 7.")
                             continue
                     break
 
