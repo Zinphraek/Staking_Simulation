@@ -2,16 +2,9 @@ import sys
 
 import random
 
-# import pandas as pd
-
-# import numpy as np
-
 from pyinputplus import *
 
 from Core import P_list
-
-
-# from pandas import Series, DataFrame
 
 
 class Package:
@@ -93,12 +86,13 @@ def cash_adjustment(b):
 
 def congratulation(a, p):
     """This function print a congratulation message, and displays a set of every pack bought and their quantity."""
+
     print(f" Congratulation!!! You just bought {a}.")
-    x = p.keys()
-    s = p.values()
+    x = p.keys()  # Extract keys from the dictionary passed to the function.
+    s = p.values()  # Extract values from the dictionary passed to the function.
     d = list()
     for i in s:
-        d.append(len(i))
+        d.append(len(i))  # Append the length of the list values from the dictionary passed to the function to d.
     r = zip(x, d)
     global total_nbr_of_pack
     total_nbr_of_pack = sum(d)
@@ -280,7 +274,7 @@ def get_paid(balance):
                           f"therefore, is no longer active and has been removed.")
                     packs_.remove(pack)
                     total_nbr_of_pack -= 1
-                    print(f"You now have {total_nbr_of_pack}  active packs remaining!")
+                    print(f"You now have {total_nbr_of_pack} active packs remaining!")
 
 
 def make_withdraw(frequency, withdraw_amount, w_e):
