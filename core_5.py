@@ -264,7 +264,7 @@ def get_paid(balance):
         if not packs_:
             pass
     else:
-        global cash, total_payments
+        global cash, total_payments, total_nbr_of_pack
         for p, packs_ in my_packs.items():
             for pack in reversed(packs_):
                 balance += pack.get_p_w_roi()
@@ -279,7 +279,8 @@ def get_paid(balance):
                     print(f"The life span of the pack: {p}: {packs_.index(pack)} has expired; "
                           f"therefore, is no longer active and has been removed.")
                     packs_.remove(pack)
-                    print(f"You now have {len(packs_)} {p} active packs remaining!")
+                    total_nbr_of_pack -= 1
+                    print(f"You now have {total_nbr_of_pack}  active packs remaining!")
 
 
 def make_withdraw(frequency, withdraw_amount, w_e):
