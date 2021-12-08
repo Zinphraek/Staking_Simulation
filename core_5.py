@@ -2,9 +2,16 @@ import sys
 
 import random
 
+# import pandas as pd
+
+# import numpy as np
+
 from pyinputplus import *
 
 from Core import P_list
+
+
+# from pandas import Series, DataFrame
 
 
 class Package:
@@ -63,13 +70,18 @@ packs = []
 for nbr, (n, v, y, m, w, t) in P_list.items():
     z = Package(nbr, n, v, y, m, w, t)
     packs.append(z)
-my_packs = []
+my_packs = {"Porto Novo": [], "Libreville": [], "Ndjamena": [], "Malabo": [], "Yaounde": [], "Pretoria": [],
+            "Le Caire": [], "Abuja": [], "Dubai": [], "Ouaga": [], "Yamoussoukro": [], "Tananarive": []}
 cash = 0
 total_payments = 0
 total_withdraw = 0
+total_nbr_of_pack = 0
 capital_invested = 0
 withdraw_count = 0
 funding_decision = True
+
+
+# nbr_of_pack =
 
 
 def cash_adjustment(b):
@@ -80,8 +92,18 @@ def cash_adjustment(b):
 
 
 def congratulation(a, p):
+    """This function print a congratulation message, and displays a set of every pack bought and their quantity."""
     print(f" Congratulation!!! You just bought {a}.")
-    print(f"Here is the list of the packs you possess so far: {p}")
+    x = p.keys()
+    s = p.values()
+    d = list()
+    for i in s:
+        d.append(len(i))
+    r = zip(x, d)
+    global total_nbr_of_pack
+    total_nbr_of_pack = sum(d)
+
+    print(f"Here is the list of the packs you possess so far: {set(r)}")
 
 
 def buy_packs(value):
@@ -89,99 +111,115 @@ def buy_packs(value):
     if value < 200:
         pass
     else:
+        global total_nbr_of_pack
         while value >= 200:
-            if value >= 100000:
-                pack10 = Package('pack_10', 'OUAGA', 100000, 225000, 17307, 4326, 52)
-                my_packs.append(pack10)
+            if value >= 1_000_000:
+                pack12 = Package('pack_12', 'Tananarive', 1_000_000, 1_370_000, 114_166.67, 26_346.15, 52)
+                my_packs["Tananarive"].append(pack12)
+                congratulation(pack12.get_pack_information(), my_packs)
+                cash_adjustment(pack12.get_p_value())
+                value -= pack12.get_p_value()
+                print(f"You now have {total_nbr_of_pack} active packs!")
+                continue
+            elif 1_000_000 > value >= 500_000:
+                pack11 = Package('pack_11', 'Yamoussoukro', 500_000, 680_000, 56666.67, 13076.92, 52)
+                my_packs["Yamoussoukro"].append(pack11)
+                congratulation(pack11.get_pack_information(), my_packs)
+                cash_adjustment(pack11.get_p_value())
+                value -= pack11.get_p_value()
+                print(f"You now have {total_nbr_of_pack} active packs!")
+                continue
+            elif 500_000 > value >= 100_000:
+                pack10 = Package('pack_10', 'Ouaga', 100_000, 135_000, 11_250, 2_596.15, 52)
+                my_packs["Ouaga"].append(pack10)
                 congratulation(pack10.get_pack_information(), my_packs)
                 cash_adjustment(pack10.get_p_value())
                 value -= pack10.get_p_value()
-                print(f"You now have {len(my_packs)} active packs!")
+                print(f"You now have {total_nbr_of_pack} active packs!")
                 continue
 
-            elif 100000 > value >= 51200:
-                pack09 = Package('pack_09', 'Dubai', 51200, 114688, 8822, 2205.5, 52)
-                my_packs.append(pack09)
+            elif 100_000 > value >= 51_200:
+                pack09 = Package('pack_09', 'Dubai', 51_200, 68_608, 5_717.33, 1319.38, 52)
+                my_packs["Dubai"].append(pack09)
                 congratulation(pack09.get_pack_information(), my_packs)
                 cash_adjustment(pack09.get_p_value())
                 value -= pack09.get_p_value()
-                print(f"You now have {len(my_packs)} active packs!")
+                print(f"You now have {total_nbr_of_pack} active packs!")
                 continue
 
-            elif 51200 > value >= 25600:
-                pack08 = Package('pack_08', 'Abuja', 25600, 56320, 4332, 1083.07, 52)
-                my_packs.append(pack08)
+            elif 51_200 > value >= 25_600:
+                pack08 = Package('pack_08', 'Abuja', 25_600, 33_792, 2_816, 649.85, 52)
+                my_packs["Abuja"].append(pack08)
                 congratulation(pack08.get_pack_information(), my_packs)
                 cash_adjustment(pack08.get_p_value())
                 value -= pack08.get_p_value()
-                print(f"You now have {len(my_packs)} active packs!")
+                print(f"You now have {total_nbr_of_pack} active packs!")
                 continue
 
-            elif 25600 > value >= 12800:
-                pack07 = Package('pack_07', 'Le Caire', 12800, 27520, 2116.92, 529.23, 52)
-                my_packs.append(pack07)
+            elif 25_600 > value >= 12_800:
+                pack07 = Package('pack_07', 'Le Caire', 12_800, 16_512, 1_376, 317.54, 52)
+                my_packs["Le Caire"].append(pack07)
                 congratulation(pack07.get_pack_information(), my_packs)
                 cash_adjustment(pack07.get_p_value())
                 value -= pack07.get_p_value()
-                print(f"You now have {len(my_packs)} active packs!")
+                print(f"You now have {total_nbr_of_pack} active packs!")
                 continue
 
-            elif 12800 > value >= 6400:
-                pack06 = Package('pack_06', 'Pretoria', 6400, 13440, 1033.84, 258.46, 52)
-                my_packs.append(pack06)
+            elif 12_800 > value >= 6_400:
+                pack06 = Package('pack_06', 'Pretoria', 6_400, 8_064, 672, 155.08, 52)
+                my_packs["Pretoria"].append(pack06)
                 congratulation(pack06.get_pack_information(), my_packs)
                 cash_adjustment(pack06.get_p_value())
                 value -= pack06.get_p_value()
-                print(f"You now have {len(my_packs)} active packs!")
+                print(f"You now have {total_nbr_of_pack} active packs!")
                 continue
 
-            elif 6400 > value >= 3200:
-                pack05 = Package('pack_05', 'Yaounde', 3200, 6560, 504.6, 126.15, 52)
-                my_packs.append(pack05)
+            elif 6_400 > value >= 3_200:
+                pack05 = Package('pack_05', 'Yaounde', 3_200, 3_936, 328, 75.69, 52)
+                my_packs["Yaounde"].append(pack05)
                 congratulation(pack05.get_pack_information(), my_packs)
                 cash_adjustment(pack05.get_p_value())
                 value -= pack05.get_p_value()
-                print(f"You now have {len(my_packs)} active packs!")
+                print(f"You now have {total_nbr_of_pack} active packs!")
                 continue
 
-            elif 3200 > value >= 1600:
-                pack04 = Package('pack_04', 'Malabo', 1600, 3200, 246.12, 61.53, 52)
-                my_packs.append(pack04)
+            elif 3_200 > value >= 1_600:
+                pack04 = Package('pack_04', 'Malabo', 1_600, 1_920, 160, 36.92, 52)
+                my_packs["Malabo"].append(pack04)
                 congratulation(pack04.get_pack_information(), my_packs)
                 cash_adjustment(pack04.get_p_value())
                 value -= pack04.get_p_value()
-                print(f"You now have {len(my_packs)} active packs!")
+                print(f"You now have {total_nbr_of_pack} active packs!")
                 continue
 
-            elif 1600 > value >= 800:
-                pack03 = Package('pack_03', 'Ndjamena', 800, 1520, 116.92, 29.23, 52)
-                my_packs.append(pack03)
+            elif 1_600 > value >= 800:
+                pack03 = Package('pack_03', 'Ndjamena', 800, 912, 76, 17.54, 52)
+                my_packs["Ndjamena"].append(pack03)
                 congratulation(pack03.get_pack_information(), my_packs)
                 cash_adjustment(pack03.get_p_value())
                 value -= pack03.get_p_value()
-                print(f"You now have {len(my_packs)} active packs!")
+                print(f"You now have {total_nbr_of_pack} active packs!")
                 continue
 
             elif 800 > value >= 400:
-                pack02 = Package('pack_02', 'Libreville', 400, 720, 55.36, 13.84, 52)
-                my_packs.append(pack02)
+                pack02 = Package('pack_02', 'Libreville', 400, 432, 36, 8.31, 52)
+                my_packs["Libreville"].append(pack02)
                 congratulation(pack02.get_pack_information(), my_packs)
                 cash_adjustment(pack02.get_p_value())
                 value -= pack02.get_p_value()
-                print(f"You now have {len(my_packs)} active packs!")
+                print(f"You now have {total_nbr_of_pack} active packs!")
                 continue
 
             else:
-                pack01 = Package('pack_01', 'Porto Novo', 200, 340, 26.12, 6.53, 52)
-                my_packs.append(pack01)
+                pack01 = Package('pack_01', 'Porto Novo', 200, 204, 17, 3.92, 52)
+                my_packs["Porto Novo"].append(pack01)
                 congratulation(pack01.get_pack_information(), my_packs)
                 cash_adjustment(pack01.get_p_value())
                 value -= pack01.get_p_value()
-                print(f"You now have {len(my_packs)} active packs!")
+                print(f"You now have {total_nbr_of_pack} active packs!")
 
 
 def get_pack(value):
-
     if value < 200:
         global funding_decision, cash, capital_invested
         while funding_decision:
@@ -200,7 +238,7 @@ def get_pack(value):
                 break
             elif decision == 1:
                 print("How much do you want to fund?")
-                print(f"The minimum amount needed to buy a pack right now is ${200-cash}.")
+                print(f"The minimum amount needed to buy a pack right now is ${200 - cash}.")
                 while True:
                     fund = inputNum()
                     if fund <= 0:
@@ -222,25 +260,27 @@ def get_pack(value):
 def get_paid(balance):
     """This function pays the user the corresponding amount
     of any pack bough """
-    if not my_packs:
-        sys.exit()
+    for p, packs_ in my_packs.items():
+        if not packs_:
+            pass
     else:
-        global cash, total_payments
-        for pack in my_packs:
-            balance += pack.get_p_w_roi()
-            cash = balance
-            total_payments += pack.get_p_w_roi()
-            print(f"HooHaa!!! You just got paid the amount of: ${pack.get_p_w_roi()}"
-                  f"\nYour new Balance is: ${balance}.")
-            pack.p_life_remaining(1)
-
-            if pack.get_p_life() >= 1:
-                pass
-            else:
-                my_packs.remove(pack)
-                print(f" The life span of the pack {pack.get_p_name()} has expired; "
-                      f"therefore, it is no longer active, and has been removed from your pack list.")
-                print(f"You now have {len(my_packs)} active packs remaining!")
+        global cash, total_payments, total_nbr_of_pack
+        for p, packs_ in my_packs.items():
+            for pack in reversed(packs_):
+                balance += pack.get_p_w_roi()
+                cash = balance
+                total_payments += pack.get_p_w_roi()
+                print(f"HooHaa!!! You just got paid the amount of: ${pack.get_p_w_roi()}"
+                      f"\nYour new Balance is: ${balance}.")
+                pack.p_life_remaining(1)
+                if pack.get_p_life() > 0:
+                    continue
+                else:
+                    print(f"The life span of the pack: {p}: {packs_.index(pack)} has expired; "
+                          f"therefore, is no longer active and has been removed.")
+                    packs_.remove(pack)
+                    total_nbr_of_pack -= 1
+                    print(f"You now have {total_nbr_of_pack}  active packs remaining!")
 
 
 def make_withdraw(frequency, withdraw_amount, w_e):
@@ -422,13 +462,14 @@ def main():
                     print(f"Your Balance is: ${cash}\n")
 
                 o = invest_length + 1
-                while my_packs:
-                    print(f" Week {o}:")
-                    get_paid(cash)
-                    print(f"Your total payments is: {total_payments}")
-                    make_withdraw(freq, withdraw_value, o)
-                    o += 1
-                    print('\n')
+                for p_element in reversed(my_packs.values()):
+                    while p_element:
+                        print(f" Week {o}:")
+                        get_paid(cash)
+                        print(f"Your total payments is: {total_payments}")
+                        make_withdraw(freq, withdraw_value, o)
+                        o += 1
+                        print('\n')
                 sys.exit()
         else:
             print(f"{choice} is not a valid entry; chose from 1 to 3.")
