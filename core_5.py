@@ -251,21 +251,20 @@ def get_pack(value):
         buy_packs(value)
 
 
-def get_paid(balance):
+def get_paid(a_dict):
     """This function pays the user the corresponding amount
-    of any pack bough """
-    for p, packs_ in my_packs.items():
+    of any pack bough. The function takes in a dictionary containing a list of packages. """
+    for p, packs_ in a_dict.items():
         if not packs_:
             pass
     else:
         global cash, total_payments, total_nbr_of_pack
-        for p, packs_ in my_packs.items():
+        for p, packs_ in a_dict.items():
             for pack in reversed(packs_):
-                balance += pack.get_p_w_roi()
-                cash = balance
+                cash += pack.get_p_w_roi()
                 total_payments += pack.get_p_w_roi()
                 print(f"HooHaa!!! You just got paid the amount of: ${pack.get_p_w_roi()}"
-                      f"\nYour new Balance is: ${balance}.")
+                      f"\nYour new Balance is: ${cash}.")
                 pack.p_life_remaining(1)
                 if pack.get_p_life() > 0:
                     continue
@@ -450,7 +449,7 @@ def main():
                 get_pack(cash)
                 for k in range(invest_length):
                     print(f'Week {k + 1}:')
-                    get_paid(cash)
+                    get_paid(my_packs)
                     make_withdraw(freq, withdraw_value, k + 1)
                     get_pack(cash)
                     print(f"Your Balance is: ${cash}\n")
@@ -459,7 +458,7 @@ def main():
                 for p_element in reversed(my_packs.values()):
                     while p_element:
                         print(f" Week {o}:")
-                        get_paid(cash)
+                        get_paid(my_packs)
                         print(f"Your total payments is: {total_payments}")
                         make_withdraw(freq, withdraw_value, o)
                         o += 1
