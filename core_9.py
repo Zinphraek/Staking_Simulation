@@ -1,7 +1,9 @@
+import random
 import sys
 
-import random
-
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
 from pyinputplus import *
 
 from Core import P_list
@@ -64,7 +66,10 @@ for nbr, (n, v, y, m, w, t) in P_list.items():
     z = Package(nbr, n, v, y, m, w, t)
     packs.append(z)
 my_packs = {"Porto Novo": [], "Libreville": [], "Ndjamena": [], "Malabo": [], "Yaounde": [], "Pretoria": [],
-            "Le Caire": [], "Abuja": [], "Dubai": [], "Ouaga": [], "Yamoussoukro": [], "Tananarive": []}
+            "Le Caire": [], "Abuja": [], "Dubai": [], "Ouaga": [], "Yamoussoukro": [], "Bayiha Bernard": []}
+
+df = pd.DataFrame(columns=['Weeks', 'Porto Novo', 'Libreville', 'Ndjamena', 'Malabo', 'Yaounde', 'Pretoria',
+                           'Le Caire', 'Abuja', 'Dubai', 'Ouaga', 'Yamoussoukro', 'Bayiha Bernard', 'Cash'])
 cash = 0
 total_payments = 0
 total_withdraw = 0
@@ -72,6 +77,7 @@ total_nbr_of_pack = 0
 capital_invested = 0
 withdraw_count = 0
 funding_decision = True
+total_wkly_pay = []
 
 
 # nbr_of_pack =
@@ -108,8 +114,8 @@ def buy_packs(value):
         global total_nbr_of_pack
         while value >= 200:
             if value >= 1_000_000:
-                pack12 = Package('pack_12', 'Tananarive', 1_000_000, 1_370_000, 114_166.67, 26_346.15, 52)
-                my_packs["Tananarive"].append(pack12)
+                pack12 = Package('pack_12', 'Bayiha Bernard', 1_000_000, 1_370_000, 114_166.67, 26_346.15, 52)
+                my_packs["Bayiha Bernard"].append(pack12)
                 congratulation(pack12.get_pack_information(), my_packs)
                 cash_adjustment(pack12.get_p_value())
                 value -= pack12.get_p_value()
@@ -254,14 +260,16 @@ def get_pack(value):
 def get_paid(a_dict):
     """This function pays the user the corresponding amount
     of any pack bough. The function takes in a dictionary containing a list of packages. """
+    t_0 = 0
     for p, packs_ in a_dict.items():
         if not packs_:
             pass
     else:
-        global cash, total_payments, total_nbr_of_pack
+        global cash, total_payments, total_nbr_of_pack, total_wkly_pay
         for p, packs_ in a_dict.items():
             for pack in reversed(packs_):
                 cash += pack.get_p_w_roi()
+                t_0 += pack.get_p_w_roi()
                 total_payments += pack.get_p_w_roi()
                 print(f"HooHaa!!! You just got paid the amount of: ${pack.get_p_w_roi()}"
                       f"\nYour new Balance is: ${cash}.")
@@ -274,6 +282,7 @@ def get_paid(a_dict):
                     packs_.remove(pack)
                     total_nbr_of_pack -= 1
                     print(f"You now have {total_nbr_of_pack} active packs remaining!")
+        total_wkly_pay.append(t_0)
 
 
 def make_withdraw(frequency, withdraw_amount, w_e):
@@ -291,6 +300,18 @@ def make_withdraw(frequency, withdraw_amount, w_e):
         print(f"Your new balance is ${cash}.")
     else:
         pass
+
+
+def data_collection(week_nbr, data_info):
+    """This function collects data generated and saves them as a cvs file."""
+    global df, cash
+    df = df.append({'Weeks': week_nbr, 'Porto Novo': len(data_info['Porto Novo']) * 3.92,
+                    'Libreville': len(data_info['Libreville']) * 8.3, 'Ndjamena': len(data_info['Ndjamena']) * 17.5,
+                    'Malabo': len(data_info['Malabo']) * 36.9, 'Yaounde': len(data_info['Yaounde']) * 76,
+                    'Pretoria': len(data_info['Pretoria']) * 155, 'Le Caire': len(data_info['Le Caire']) * 317.5,
+                    'Abuja': len(data_info['Abuja']) * 649.9, 'Dubai': len(data_info['Dubai']) * 1319.4,
+                    'Ouaga': len(data_info['Ouaga']) * 2596, 'Yamoussoukro': len(data_info['Yamoussoukro']) * 13077,
+                    'Bayiha Bernard': len(data_info['Bayiha Bernard']) * 26346.1, 'Cash': cash}, ignore_index=True)
 
 
 def main():
@@ -403,6 +424,7 @@ def main():
                     get_paid(my_packs)
                     make_withdraw(freq, withdraw_value, k + 1)
                     get_pack(cash)
+                    data_collection(k + 1, my_packs)
                     print(f"Your Balance is: ${cash}\n")
 
                 o = invest_length + 1
@@ -412,8 +434,30 @@ def main():
                         get_paid(my_packs)
                         print(f"Your total payments is: {total_payments}")
                         make_withdraw(freq, withdraw_value, o)
+                        data_collection(o, my_packs)
                         o += 1
                         print('\n')
+
+                global df
+                total = np.array(total_wkly_pay)
+                df.insert(loc=13, column='Total', value=total)
+                df.set_index('Weeks')
+                df = df.loc[:, (df != 0).any(axis=0)]
+                print(df)
+                df.plot(x='Weeks', kind='line')
+                plt.legend(loc='best')
+
+                print("Press 'S' to save your result as csv file, or anything else exit the simulation.")
+                while True:
+                    dl = input('> ')
+                    if dl.lower() == 's':
+                        df.to_csv()
+                        print('Thank You!')
+                        break
+                    else:
+                        print('Thank you!')
+                        break
+                plt.show()
                 sys.exit()
         else:
             print(f"{choice} is not a valid entry; chose from 1 to 2.")
