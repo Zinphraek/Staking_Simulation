@@ -303,7 +303,7 @@ def make_withdraw(frequency, withdraw_amount, w_e):
 
 
 def data_collection(week_nbr, data_info):
-    """This function collects data generated and saves them as a cvs file."""
+    """This function collects data generated and structures them as a Data Frame."""
     global df, cash
     df = df.append({'Weeks': week_nbr, 'Porto Novo': len(data_info['Porto Novo']) * 3.92,
                     'Libreville': len(data_info['Libreville']) * 8.3, 'Ndjamena': len(data_info['Ndjamena']) * 17.5,
@@ -445,17 +445,18 @@ def main():
                 df = df.loc[:, (df != 0).any(axis=0)]
                 print(df)
                 df.plot(x='Weeks', kind='line')
+                df.plot(x='Weeks', kind='line', subplots=True, figsize=(6, 50))
                 plt.legend(loc='best')
 
                 print("Press 'S' to save your result as csv file, or anything else exit the simulation.")
                 while True:
                     dl = input('> ')
-                    if dl.lower() == 's':
-                        df.to_csv()
-                        print('Thank You!')
+                    if dl.lower() != 's':
+                        print('Thank you!')
                         break
                     else:
-                        print('Thank you!')
+                        df.to_csv('My_Data.csv')
+                        print('Thank You!')
                         break
                 plt.show()
                 sys.exit()
