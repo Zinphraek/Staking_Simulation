@@ -72,7 +72,7 @@ P_list = {
     'pack_07': ('Le Caire', 12_800, 16_512, 1376, 317.5, 52),
     'pack_08': ('Abuja', 25_600, 33_792, 2816, 649.9, 52),
     'pack_09': ('Dubai', 51_200, 68_608, 5717.3, 1319.4, 52),
-    'pack_10': ('OUAGA', 100_000, 135_000, 11_250, 2596, 52),
+    'pack_10': ('Ouaga', 100_000, 135_000, 11_250, 2596, 52),
     'pack_11': ('Yamoussoukro', 500_000, 680_000, 56_667, 13_077, 52),
     'pack_12': ('Bayiha Bernard', 1_000_000, 1_370_000, 114_167, 26_346.1, 52)}
 
@@ -83,11 +83,14 @@ for k_, v in P_list.items():  # Generate a list of available stacking package.
     packs.append(Package(k_, *v))
 
 
-my_packs = {"Porto Novo": [], "Libreville": [], "Ndjamena": [], "Malabo": [], "Yaounde": [], "Pretoria": [],
-            "Le Caire": [], "Abuja": [], "Dubai": [], "Ouaga": [], "Yamoussoukro": [], "Bayiha Bernard": []}
+my_packs = {P_list['pack_01'][0]: [], P_list['pack_02'][0]: [], P_list['pack_03'][0]: [], P_list['pack_04'][0]: [],
+            P_list['pack_05'][0]: [], P_list['pack_06'][0]: [], P_list['pack_07'][0]: [], P_list['pack_08'][0]: [],
+            P_list['pack_09'][0]: [], P_list['pack_10'][0]: [], P_list['pack_11'][0]: [], P_list['pack_12'][0]: []}
 
-df = pd.DataFrame(columns=['Weeks', 'Porto Novo', 'Libreville', 'Ndjamena', 'Malabo', 'Yaounde', 'Pretoria',
-                           'Le Caire', 'Abuja', 'Dubai', 'Ouaga', 'Yamoussoukro', 'Bayiha Bernard', 'Cash'])
+df = pd.DataFrame(columns=['Weeks', P_list['pack_01'][0], P_list['pack_02'][0], P_list['pack_03'][0],
+                           P_list['pack_04'][0], P_list['pack_05'][0], P_list['pack_06'][0], P_list['pack_07'][0],
+                           P_list['pack_08'][0], P_list['pack_09'][0], P_list['pack_10'][0], P_list['pack_11'][0],
+                           P_list['pack_12'][0], 'Cash'])
 cash = 0
 total_payments = 0
 total_withdraw = 0
@@ -230,7 +233,7 @@ def buy_packs(value):
 
             else:
                 pack01 = Package(P_list_[0], *P_list['pack_01'])
-                my_packs["Porto Novo"].append(pack01)
+                my_packs["Porto-Novo"].append(pack01)
                 congratulation(pack01.__repr__(), my_packs)
                 cash_adjustment(pack01.get_p_value)
                 value -= pack01.get_p_value
@@ -325,8 +328,10 @@ def reset_data():
     global df, total_payments, total_withdraw, total_nbr_of_pack, capital_invested, withdraw_count, funding_decision, \
         total_wkly_pay
 
-    df = pd.DataFrame(columns=['Weeks', 'Porto Novo', 'Libreville', 'Ndjamena', 'Malabo', 'Yaounde', 'Pretoria',
-                               'Le Caire', 'Abuja', 'Dubai', 'Ouaga', 'Yamoussoukro', 'Bayiha Bernard', 'Cash'])
+    df = pd.DataFrame(columns=['Weeks', P_list['pack_01'][0], P_list['pack_02'][0], P_list['pack_03'][0],
+                               P_list['pack_04'][0], P_list['pack_05'][0], P_list['pack_06'][0], P_list['pack_07'][0],
+                               P_list['pack_08'][0], P_list['pack_09'][0], P_list['pack_10'][0], P_list['pack_11'][0],
+                               P_list['pack_12'][0], 'Cash'])
     total_payments = 0
     total_withdraw = 0
     total_nbr_of_pack = 0
@@ -339,28 +344,30 @@ def reset_data():
 def data_collection(week_nbr, data_info):
     """This function collects data generated and structures them as a Data Frame."""
     global df, cash
-    df = df.append({'Weeks': int(week_nbr), 'Porto Novo': len(data_info['Porto Novo']) * P_list['pack_01'][4],
-                    'Libreville': len(data_info['Libreville']) * P_list['pack_02'][4],
-                    'Ndjamena': len(data_info['Ndjamena']) * P_list['pack_03'][4],
-                    'Malabo': len(data_info['Malabo']) * P_list['pack_04'][4],
-                    'Yaounde': len(data_info['Yaounde']) * P_list['pack_05'][4],
-                    'Pretoria': len(data_info['Pretoria']) * P_list['pack_06'][4],
-                    'Le Caire': len(data_info['Le Caire']) * P_list['pack_07'][4],
-                    'Abuja': len(data_info['Abuja']) * P_list['pack_08'][4],
-                    'Dubai': len(data_info['Dubai']) * P_list['pack_09'][4],
-                    'Ouaga': len(data_info['Ouaga']) * P_list['pack_10'][4],
-                    'Yamoussoukro': len(data_info['Yamoussoukro']) * P_list['pack_11'][4],
-                    'Bayiha Bernard': len(data_info['Bayiha Bernard']) * P_list['pack_12'][4],
+    df = df.append({'Weeks': int(week_nbr), P_list['pack_01'][0]: len(data_info['Porto-Novo']) * P_list['pack_01'][4],
+                    P_list['pack_02'][0]: len(data_info['Libreville']) * P_list['pack_02'][4],
+                    P_list['pack_03'][0]: len(data_info['Ndjamena']) * P_list['pack_03'][4],
+                    P_list['pack_04'][0]: len(data_info['Malabo']) * P_list['pack_04'][4],
+                    P_list['pack_05'][0]: len(data_info['Yaounde']) * P_list['pack_05'][4],
+                    P_list['pack_06'][0]: len(data_info['Pretoria']) * P_list['pack_06'][4],
+                    P_list['pack_07'][0]: len(data_info['Le Caire']) * P_list['pack_07'][4],
+                    P_list['pack_08'][0]: len(data_info['Abuja']) * P_list['pack_08'][4],
+                    P_list['pack_09'][0]: len(data_info['Dubai']) * P_list['pack_09'][4],
+                    P_list['pack_10'][0]: len(data_info['Ouaga']) * P_list['pack_10'][4],
+                    P_list['pack_11'][0]: len(data_info['Yamoussoukro']) * P_list['pack_11'][4],
+                    P_list['pack_12'][0]: len(data_info['Bayiha Bernard']) * P_list['pack_12'][4],
                     'Cash': cash}, ignore_index=True)
 
 
 def plotting(d_f):
     """This function displays custom charts."""
-    col = {'Porto Novo': ['Black', '-.'], 'Libreville': ['Green', '-.'], 'Ndjamena': ['Orange', '-.'],
-           'Malabo': ['Blue', '--'], 'Yaounde': ['Red', '--'], 'Pretoria': ['Purple', '--'], 'Le Caire': ['Black', ':'],
-           'Abuja': ['Green', 'solid'], 'Dubai': ['Orange', '--'], 'Ouaga': ['Blue', '-.'],
-           'Yamoussoukro': ['Red', '-.'],
-           'Bayiha Bernard': ['Purple', '-.'], 'Total': ['Magenta', '-'], 'Cash': ['Yellow', 'solid']}
+    col = {P_list['pack_01'][0]: ['Black', '-.'], P_list['pack_02'][0]: ['Green', '-.'],
+           P_list['pack_03'][0]: ['Orange', '-.'], P_list['pack_04'][0]: ['Blue', '--'],
+           P_list['pack_05'][0]: ['Red', '--'], P_list['pack_06'][0]: ['Purple', '--'],
+           P_list['pack_07'][0]: ['Black', ':'], P_list['pack_08'][0]: ['Green', 'solid'],
+           P_list['pack_09'][0]: ['Orange', '--'], P_list['pack_10'][0]: ['Blue', '-.'],
+           P_list['pack_11'][0]: ['Red', '-.'], P_list['pack_12'][0]: ['Purple', '-.'],
+           'Total': ['Magenta', '-'], 'Cash': ['Yellow', 'solid']}
 
     for p in d_f.columns:
         if p == 'Weeks':
