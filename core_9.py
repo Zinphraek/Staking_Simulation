@@ -101,9 +101,6 @@ funding_decision = True
 total_wkly_pay = []
 
 
-# nbr_of_pack =
-
-
 def cash_adjustment(b):
     """This function take in the value of a pack and subtract it from the cash balance when a pack is bought"""
     global cash
@@ -375,7 +372,7 @@ def plotting(d_f):
         else:
             d_f[p].plot(x=d_f['Weeks'], c=col[p][0], ls=col[p][1], ms=7, label=p)
             plt.legend(loc='best')
-    d_f.plot(x='Weeks', subplots=True, figsize=(6, 50))
+    d_f.plot(x='Weeks', subplots=True, figsize=(30, 50))
     plt.show()
 
 
@@ -430,7 +427,7 @@ def simulator():
                       "(4) Quarterly.\n"
                       "(5) Semi annually.\n"
                       "(6) Annually.\n"
-                      "(7) Randomly.")
+                      "(7) Pick a frequency Randomly.")
 
                 message = inputNum('> ')  # Setup the withdrawal frequency.
                 if message == 1:
@@ -492,9 +489,7 @@ def simulator():
         df = df.loc[:, (df != 0).any(axis=0)]
         df1 = df.set_index('Weeks')
         print(df1)
-        # df.plot(x='Weeks', kind='line')
-        # df.plot(x='Weeks', kind='line', subplots=True, figsize=(6, 50))
-        # plt.legend(loc='best')
+        print(df1['Total'].describe())
 
         print("Press 'S' to save your result as csv file, or anything else exit the simulation.")
         while True:
