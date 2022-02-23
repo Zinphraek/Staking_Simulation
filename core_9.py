@@ -241,7 +241,7 @@ def get_pack(value):
     if value < 200:
         global funding_decision, cash, capital_invested
         while funding_decision:
-            print("You don't have enough money yet to buy a pack!\n"
+            print("You don't have enough cash yet to buy a pack!\n"
                   " Fund your account, or continue without additional funds. ")
             print("(1) Add fund to my account.\n"
                   "(2) Continue without funding.\n"
@@ -321,7 +321,7 @@ def make_withdraw(frequency, withdraw_amount, w_e):
 
 
 def reset_data():
-    """This function set all globals variables of the program."""
+    """This function reset all global variables of the program."""
     global df, total_payments, total_withdraw, total_nbr_of_pack, capital_invested, withdraw_count, funding_decision, \
         total_wkly_pay
 
@@ -510,12 +510,12 @@ def main():
         print("""--Limo coin stacking system simulation--
 
            Purpose:
-               This program helps the user simulate the stacking return of the Limo coin
+               This program helps the user simulate the stacking return of the Limo coin compounded 
                and displays the result. This part is the automated version.
                A manual version will be added to this program latter.""")
 
         print('\n')
-        print("Select what you want to do:\n"
+        print("Select an option:\n"
               "(1) Run a simulation.\n"
               "(2) Exit.")
         choice = inputNum('> ')
