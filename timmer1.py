@@ -1,6 +1,7 @@
 # Python program to illustrate a stop watch
 # using Tkinter
 # importing the required libraries
+# Author: Patrick Tchuitio
 import tkinter as Tkinter
 from datetime import datetime
 
